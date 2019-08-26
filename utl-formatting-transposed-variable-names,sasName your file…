@@ -1,0 +1,92 @@
+Formatting transposed variable names                                                                              
+                                                                                                                  
+Problem with my code                                                                                              
+                                                                                                                  
+ I get                                                                                                            
+ =====                                                                                                            
+    ID     _17N12N29    _18N01N31    _18N02N28                                                                    
+                                                                                                                  
+  23412       50000       45000        40000                                                                      
+  27435      100000       80000        60000                                                                      
+                                                                                                                  
+ I WANT                                                                                                           
+ ======                                                                                                           
+  WANT total obs=2                                                                                                
+                                                                                                                  
+     ID      DEC17    JAN18    FEB18                                                                              
+                                                                                                                  
+   23412     50000    45000    40000                                                                              
+   27435    100000    80000    60000                                                                              
+                                                                                                                  
+                                                                                                                  
+github                                                                                                            
+https://tinyurl.com/y5sb7quq                                                                                      
+https://github.com/rogerjdeangelis/utl-formatting-transposed-variable-names                                       
+                                                                                                                  
+Related to                                                                                                        
+stackoverflow                                                                                                     
+https://tinyurl.com/yxrbple3                                                                                      
+https://stackoverflow.com/questions/57610170/proc-sql-transposing-data-into-columns-when-condition-met            
+                                                                                                                  
+*_                   _                                                                                            
+(_)_ __  _ __  _   _| |_                                                                                          
+| | '_ \| '_ \| | | | __|                                                                                         
+| | | | | |_) | |_| | |_                                                                                          
+|_|_| |_| .__/ \__,_|\__|                                                                                         
+        |_|                                                                                                       
+;                                                                                                                 
+                                                                                                                  
+data have ;                                                                                                       
+  format Day_Key yymmdd8.;                                                                                        
+  input ID Day_Key yymmdd8. Balance;                                                                              
+cards4;                                                                                                           
+23412 20171229 50000                                                                                              
+23412 20180131 45000                                                                                              
+23412 20180228 40000                                                                                              
+27435 20171229 100000                                                                                             
+27435 20180131 80000                                                                                              
+27435 20180228 60000                                                                                              
+;;;;                                                                                                              
+run;quit;                                                                                                         
+                                                                                                                  
+ WORK.HAVE total obs=6                                                                                            
+                                                                                                                  
+   DAY_KEY       ID     BALANCE                                                                                   
+                                                                                                                  
+   17-12-29    23412      50000                                                                                   
+   18-01-31    23412      45000                                                                                   
+   18-02-28    23412      40000                                                                                   
+   17-12-29    27435     100000                                                                                   
+   18-01-31    27435      80000                                                                                   
+   18-02-28    27435      60000                                                                                   
+                                                                                                                  
+*            _               _                                                                                    
+  ___  _   _| |_ _ __  _   _| |_                                                                                  
+ / _ \| | | | __| '_ \| | | | __|                                                                                 
+| (_) | |_| | |_| |_) | |_| | |_                                                                                  
+ \___/ \__,_|\__| .__/ \__,_|\__|                                                                                 
+                |_|                                                                                               
+;                                                                                                                 
+                                                                                                                  
+                                                                                                                  
+Up to 40 obs from WANT total obs=2                                                                                
+                                                                                                                  
+Obs      ID      DEC17    JAN18    FEB18                                                                          
+                                                                                                                  
+ 1     23412     50000    45000    40000                                                                          
+ 2     27435    100000    80000    60000                                                                          
+                                                                                                                  
+*                                                                                                                 
+ _ __  _ __ ___   ___ ___  ___ ___                                                                                
+| '_ \| '__/ _ \ / __/ _ \/ __/ __|                                                                               
+| |_) | | | (_) | (_|  __/\__ \__ \                                                                               
+| .__/|_|  \___/ \___\___||___/___/                                                                               
+|_|                                                                                                               
+;                                                                                                                 
+                                                                                                                  
+proc transpose data=have out=want (drop=_name_);                                                                  
+  format day_key monyy5.;                                                                                         
+  id Day_Key;                                                                                                     
+  by id;                                                                                                          
+run;quit;                                                                                                         
+                                                                                                                  
